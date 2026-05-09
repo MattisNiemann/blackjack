@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 public class Main{
     
     static List<Card> deck = new ArrayList<>();
@@ -37,16 +36,52 @@ public static void createDeck() {
         }
     }
 }
-public static void menu() {
+public static void playerTurn() {
     update();
     System.out.println("1. Karte ziehen");
-    System.out.println("2. Hand anzeigen");
-    System.out.println("3. Beenden");
-    Scanner scanner = new Scanner(System.in);
-    int choice = scanner.nextInt();
-    System.out.println(choice);
+    System.out.println("2. Karte halten");
+    int choice;
+        try (java.util.Scanner scanner = new java.util.Scanner(System.in)) {
+            choice = scanner.nextInt();
+        }
+    
+    if (choice == 1) {
+        drawCard(playerHand);
+        if (calculateHandValue(playerHand) > 21) {          // wenn über 21 punkte -> verloren
+            System.out.println("Du hast verloren!");
+            System.out.println("Deine Karten: " + playerHand);1
+            return;
+        }
+        playerTurn();
+    } else if (choice == 2) {
+        houseTurn();
+    }
+    
 
     
+}
+public static void houseTurn() {
+    while (calculateHandValue(houseHand) < 17) {
+        drawCard(houseHand);
+    }
+    update();
+    int playerValue = calculateHandValue(playerHand);
+    int houseValue = calculateHandValue(houseHand);
+    if (houseValue > 21 || playerValue > houseValue) {
+        System.out.println("Du hast gewonnen!");
+    } else if (playerValue < houseValue) {
+        System.out.println("Du hast verloren!");
+    } else {
+        System.out.println("Unentschieden!");
+    }
+}
+public static int calculateHandValue(List <Card> hand){
+// rechnet den wert aller Karten auf der Hand aus
+int sum = 0;
+    for (Card card : hand) {
+        sum += card.getValue(); // Wert der Karte zur Summe hinzufügen
+    }
+    return sum;
 }
 public static void startGame() {
    // deck wird erstellt und gemischt
@@ -60,11 +95,7 @@ public static void startGame() {
             drawCard(houseHand);
         
 update();
-menu();
-
-    
-
-    
+playerTurn();
 
 }
 public static void update() {

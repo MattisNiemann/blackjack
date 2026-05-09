@@ -14,8 +14,11 @@ public String getColor() {
     return color;
 }
 
-public String getValue() {
-    return value;
+public int getValue() {
+if (value.equals("Bube") || value.equals("Dame") || value.equals("König")) {
+    return 10;
+}
+return Integer.parseInt(value);
 }
 @Override
 public String toString() {
