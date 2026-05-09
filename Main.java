@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         startGame(); // spiel startet
+        Gui.main(args); // GUI wird gestartet
 
     }
 
