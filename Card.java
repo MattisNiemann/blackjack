@@ -18,6 +18,10 @@ public int getValue() {
 if (value.equals("Bube") || value.equals("Dame") || value.equals("König")) {
     return 10;
 }
+if (value.equals("Ass") ) {
+    return 11;
+}
+
 return Integer.parseInt(value);
 }
 @Override
