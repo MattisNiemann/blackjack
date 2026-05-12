@@ -91,11 +91,11 @@ public class Gui {
         frame.setVisible(true);
     }
 
-    public void update(List<Card> playerHand, List<Card> houseHand, boolean hideHouseCard) {
+    public void update(List<Card> playerHand, List<Card> houseHand, boolean hideHouseCard) {    //gui wird geupdated
         playerPanel.removeAll();
         housePanel.removeAll();
 
-        for (Card card : houseHand) {
+        for (Card card : houseHand) {               // Haus Karten werden geadded
             if (hideHouseCard && housePanel.getComponentCount() == 1) {
                 housePanel.add(createBackLabel());
             } else {
@@ -103,17 +103,17 @@ public class Gui {
             }
         }
 
-        for (Card card : playerHand) {
+        for (Card card : playerHand) {          // Spieler Karten werden geadded
             playerPanel.add(createCardLabel(card));
         }
 
-        int playerValue = calculateValue(playerHand);
+        int playerValue = Main.calculateHandValue(playerHand);       // punkte werden berechnet und dargestellt
         playerValueLabel.setText("Spieler: " + playerValue);
 
         if (hideHouseCard) {
             houseValueLabel.setText("Haus: ?");
         } else {
-            int houseValue = calculateValue(houseHand);
+            int houseValue = Main.calculateHandValue(houseHand);
             houseValueLabel.setText("Haus: " + houseValue);
         }
 
@@ -153,13 +153,5 @@ public class Gui {
         return new JLabel(new ImageIcon(image));
     }
 
-    private int calculateValue(List<Card> hand) {
-        int sum = 0;
-
-        for (Card card : hand) {
-            sum += card.getValue();
-        }
-
-        return sum;
-    }
+    
 }

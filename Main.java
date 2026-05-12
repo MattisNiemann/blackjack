@@ -7,8 +7,7 @@ public class Main {
     static List<Card> deck = new ArrayList<>();
     static List<Card> playerHand = new ArrayList<>();
     static List<Card> houseHand = new ArrayList<>();
-
-    static java.util.Scanner scanner = new java.util.Scanner(System.in);
+    
 
     static Gui gui;
     public static void main(String[] args) {
