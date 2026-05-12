@@ -1,3 +1,7 @@
+/**
+ * Diese Klasse beschreibt eine einzelne Spielkarte.
+ * Eine Karte besitzt einen Wert und eine Farbe.
+ */
 public class Card {
     public String color;
     public String value;

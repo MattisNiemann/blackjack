@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Hauptklasse des Blackjack-Spiels.
+ * Hier werden Deck, Spielablauf und Gewinnerlogik verwaltet.
+ */
+
+
 public class Main {
 
     static List<Card> deck = new ArrayList<>();
@@ -22,6 +28,9 @@ public class Main {
 
     }
 
+/**
+ * Erstellt ein vollständiges Kartendeck.
+ */
     public static void createDeck() {
         String[] colors = { "Herz", "Karo", "Piek", "Kreuz" };
         String[] values = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Bube", "Dame", "König", "Ass" };
@@ -60,11 +69,20 @@ public class Main {
     public static int calculateHandValue(List<Card> hand) {
         // rechnet den wert aller Karten auf der Hand aus
         int sum = 0;
+        int aces = 0;
         for (Card card : hand) {
             sum += card.getValue(); // Wert der Karte zur Summe hinzufügen
+            if(card.getValue() == 11) { 
+                aces++; 
+            }
         }
+        while (sum > 21 && aces > 0) {
+    sum -= 10;
+    aces--;
+}
         return sum;
     }
+
 
     public static void startGame() {
 
