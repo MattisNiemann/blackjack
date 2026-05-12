@@ -3,8 +3,8 @@
  * Eine Karte besitzt einen Wert und eine Farbe.
  */
 public class Card {
-    public String color;
-    public String value;
+    private String color;
+    private String value;
 
 
     public Card(String color, String value) {
