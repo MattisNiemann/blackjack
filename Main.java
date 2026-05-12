@@ -8,11 +8,11 @@ public class Main {
     static List<Card> playerHand = new ArrayList<>();
     static List<Card> houseHand = new ArrayList<>();
 
+    static java.util.Scanner scanner = new java.util.Scanner(System.in);
+
+    static Gui gui;
     public static void main(String[] args) {
-
         startGame(); // spiel startet
-        Gui.main(args); // GUI wird gestartet
-
     }
 
     public static Card drawCard(List<Card> target) {
@@ -33,38 +33,6 @@ public class Main {
             }
         }
     }
-
-    public static void playerTurn() {
-            // der Spieler sieht seine Karten und kann entweder noch eine ziehen oder halten
-        System.out.println("Spieler Karten: " + playerHand);
-        System.out.println("Haus Karten: " + houseHand.get(0) + " ??");
-        System.out.println("1. Karte ziehen");
-        System.out.println("2. Karte halten");
-
-        int choice = 0;
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        while (choice != 1 && choice != 2) { // bis er 1 oder 2 wählt 
-            try {
-                choice = scanner.nextInt(); // Eingabe des spielers wird gelesen
-            } catch (java.util.InputMismatchException e) {
-                System.out.println("Ungültige Eingabe. Bitte eine Zahl eingeben.");
-                scanner.next();
-            }
-        }
-
-        if (choice == 1) {  // weitere Karte ziehen
-            drawCard(playerHand);
-            if (calculateHandValue(playerHand) > 21) { // wenn über 21 punkte -> spiel vorbei
-                detectWinner();
-                return;
-            }
-            playerTurn();
-        } else if (choice == 2) { // halten -> haus ist am zug
-            houseTurn();
-        }
-
-    }
-
     public static void houseTurn() {
         while (calculateHandValue(houseHand) < 17) {    // haus zieht bis es auf min 17 steht
             drawCard(houseHand);
@@ -72,23 +40,22 @@ public class Main {
         detectWinner();
     }
 
-    public static void detectWinner() { // gewinner wird ermittelt und das ergebnis wird ausgegeben
-
+    public static void detectWinner() {
         int playerValue = calculateHandValue(playerHand);
         int houseValue = calculateHandValue(houseHand);
-        System.out.println("Spieler Karten: " + playerHand + playerValue + " Punkte");
-        System.out.println("Haus Karten: " + houseHand + houseValue + " Punkte");
+    
+        gui.update(playerHand, houseHand, false);
+        gui.setButtonsEnabled(false);
+    
         if (playerValue > 21) {
-            System.out.println("Du hast verloren!");
-        }
-         else if (houseValue > 21 || playerValue > houseValue) {
-            System.out.println("Du hast gewonnen!");
+            gui.setStatus("Du hast verloren!");
+        } else if (houseValue > 21 || playerValue > houseValue) {
+            gui.setStatus("Du hast gewonnen!");
         } else if (playerValue < houseValue) {
-            System.out.println("Du hast verloren!");
+            gui.setStatus("Du hast verloren!");
         } else {
-            System.out.println("Unentschieden!");
+            gui.setStatus("Unentschieden!");
         }
-        endGame();
     }
 
     public static int calculateHandValue(List<Card> hand) {
@@ -116,13 +83,27 @@ public class Main {
         drawCard(houseHand);
         drawCard(houseHand);
 
-        playerTurn(); // spieler ist am Zug
+        gui = new Gui(e -> {
+            String command = e.getActionCommand();
+        
+            if (command.equals("hit")) {
+                drawCard(playerHand);
+                gui.update(playerHand, houseHand, true);
+        
+                if (calculateHandValue(playerHand) > 21) {
+                    detectWinner();
+                }
+        
+            } else if (command.equals("stand")) {
+                houseTurn();
+        
+            } else if (command.equals("restart")) {
+                startGame();
+            }
+        });
+        
+        gui.update(playerHand, houseHand, true);
 
     }
-    public static void endGame() {
-        System.out.println("Spiel beendet. Zum neustart Enter drücken.");
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        scanner.nextLine(); // Warten auf Eingabe
-        startGame(); // Spiel neu starten
-    }
+    
 }

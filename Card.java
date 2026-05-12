@@ -28,4 +28,7 @@ return Integer.parseInt(value);
 public String toString() {
     return color + " " + value;
 }
+public String getName() {
+    return value;
+}
 }
